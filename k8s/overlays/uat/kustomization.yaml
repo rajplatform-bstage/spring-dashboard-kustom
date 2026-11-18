@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: uat
+resources:
+  - ../../base
+replicas:
+  - name: spring-dashboard
+    count: 2
+images:
+  - name: DOCKERHUB_USERNAME/spring-dashboard
+    newName: DOCKERHUB_USERNAME/spring-dashboard
+    newTag: v1
+configMapGenerator:
+  - name: spring-dashboard-config
+    literals:
+      - APP_ENV=uat
+      - LOG_LEVEL=INFO
+labels:
+  - pairs:
+      environment: uat
+      app.kubernetes.io/part-of: spring-dashboard
